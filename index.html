@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pavan Kumar Ponnaganti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: al-folio style academic homepage. Top bar with name left and views right; About has a profile column and a news list; Publications uses venue badges in a left column. */
+:root {
+  --bg: #ffffff;
+  --surface: #f6f8f8;
+  --ink: #1d2428;
+  --muted: #5d6a70;
+  --line: #e0e6e8;
+  --accent: #0f766e;
+  --accent-ink: #ffffff;
+  --accent-soft: #e0f2f0;
+  --warn: #8a5a00;
+  --warn-soft: #f8edd3;
+  --ok: #0f766e;
+  --ok-soft: #e0f2f0;
+  --idle: #4b5a66;
+  --idle-soft: #e9edf0;
+  --font-display: "Roboto Slab", Georgia, serif;
+  --font-body: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12181b;
+    --surface: #1a2226;
+    --ink: #e8eef0;
+    --muted: #9fb0b6;
+    --line: #2b383d;
+    --accent: #5eead4;
+    --accent-ink: #0b1214;
+    --accent-soft: #15302d;
+    --warn: #f0c36d;
+    --warn-soft: #3a2f16;
+    --ok: #5eead4;
+    --ok-soft: #15302d;
+    --idle: #b0bfc9;
+    --idle-soft: #252f36;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12181b;
+  --surface: #1a2226;
+  --ink: #e8eef0;
+  --muted: #9fb0b6;
+  --line: #2b383d;
+  --accent: #5eead4;
+  --accent-ink: #0b1214;
+  --accent-soft: #15302d;
+  --warn: #f0c36d;
+  --warn-soft: #3a2f16;
+  --ok: #5eead4;
+  --ok-soft: #15302d;
+  --idle: #b0bfc9;
+  --idle-soft: #252f36;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 1.65; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.25; }
+p { margin: 0 0 14px; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+/* nav */
+.nav { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: 0; z-index: 10; }
+.nav .wrap { display: flex; justify-content: space-between; align-items: center; min-height: 60px; gap: 16px; flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+.brand span { font-weight: 400; color: var(--muted); }
+.nav ul { list-style: none; display: flex; gap: 4px; margin: 0; padding: 0; flex-wrap: wrap; }
+.nav a.tab { display: block; padding: 6px 12px; color: var(--muted); text-decoration: none; border-radius: 6px; font-size: 15px; }
+.nav a.tab:hover { color: var(--ink); }
+.nav a.tab[aria-current="page"] { color: var(--accent); font-weight: 500; box-shadow: inset 0 -2px 0 var(--accent); border-radius: 0; }
+
+main { padding: 56px 0 24px; }
+.view[hidden] { display: none; }
+.page-title { font-size: 34px; font-weight: 500; margin-bottom: 6px; }
+.page-sub { color: var(--muted); margin-bottom: 28px; max-width: 60ch; }
+
+/* about */
+.about { display: grid; grid-template-columns: 250px 1fr; gap: 40px; align-items: start; }
+.profile { display: grid; gap: 14px; position: sticky; top: 84px; }
+.avatar { object-fit: cover; display: block; width: 200px; height: 200px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--line); }
+.contact { font-size: 14.5px; color: var(--muted); display: grid; gap: 4px; }
+.contact .mail { font-family: var(--font-mono); font-size: 13px; color: var(--ink); word-break: break-all; }
+.icon-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill-link { display: inline-block; font-size: 13.5px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; background: var(--bg); }
+.pill-link:hover { border-color: var(--accent); color: var(--accent); }
+.about h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 700; letter-spacing: -0.01em; }
+.about .role { color: var(--muted); font-size: 17px; margin: 6px 0 22px; }
+.bio p { max-width: 62ch; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+.tag { font-size: 13.5px; padding: 3px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+
+h2.section { font-size: 22px; font-weight: 500; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.news { display: grid; gap: 0; }
+.news .item { display: grid; grid-template-columns: 96px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.news .date { font-family: var(--font-mono); font-size: 13px; color: var(--muted); padding-top: 2px; }
+.news .item:last-child { border-bottom: 0; }
+
+/* publications */
+.pub-year { font-family: var(--font-display); font-size: 24px; font-weight: 500; margin: 32px 0 6px; color: var(--ink); }
+.pub-year:first-of-type { margin-top: 0; }
+.pub { display: grid; grid-template-columns: 110px 1fr; gap: 6px 22px; padding: 18px 0; border-top: 1px solid var(--line); }
+.pub[hidden] { display: none; }
+.abbr { align-self: start; text-align: center; font-family: var(--font-mono); font-weight: 500; font-size: 13px; padding: 6px 8px; border-radius: 6px; background: var(--accent); color: var(--accent-ink); }
+.abbr.draft { background: var(--idle-soft); color: var(--idle); }
+.pub .t { font-weight: 700; font-size: 16.5px; line-height: 1.4; margin-bottom: 4px; }
+.pub .a { color: var(--muted); font-size: 14.5px; }
+.pub .a b { color: var(--ink); font-weight: 700; }
+.pub .v { font-size: 14.5px; margin-top: 4px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.pill { font-family: var(--font-mono); font-size: 12px; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.pill.ok { color: var(--ok); background: var(--ok-soft); }
+.pill.warn { color: var(--warn); background: var(--warn-soft); }
+.pill.idle { color: var(--idle); background: var(--idle-soft); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.filters button { font-family: var(--font-body); font-size: 14px; padding: 5px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); color: var(--muted); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+/* research */
+.arc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 8px; }
+.step { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 6px; align-content: start; }
+.step .n { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+.step h3 { font-size: 18px; font-weight: 500; }
+.step p { font-size: 14.5px; color: var(--muted); margin: 0; }
+.thread { padding: 22px 0; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+.thread h3 { font-size: 22px; font-weight: 500; }
+.thread p { max-width: 66ch; margin: 0; }
+.thread .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+/* cv */
+.cv-block { margin-bottom: 8px; }
+.cv-row { display: grid; grid-template-columns: 150px 1fr; gap: 4px 24px; padding: 12px 0; border-top: 1px solid var(--line); }
+.cv-row .when { font-family: var(--font-mono); font-size: 13px; color: var(--muted); padding-top: 3px; }
+.cv-row h3 { font-family: var(--font-body); font-size: 16.5px; font-weight: 700; }
+.cv-row .where { color: var(--muted); font-size: 14.5px; }
+.cv-row ul { margin: 6px 0 0; padding-left: 18px; font-size: 15px; }
+.cv-row li { margin: 2px 0; }
+.skills { display: grid; gap: 6px; font-size: 15px; }
+.skills b { font-weight: 500; }
+
+footer { border-top: 1px solid var(--line); padding: 22px 0 44px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+
+@media (max-width: 780px) {
+  .about { grid-template-columns: 1fr; gap: 24px; }
+  .profile { position: static; grid-template-columns: auto 1fr; align-items: center; }
+  .avatar { width: 120px; height: 120px; font-size: 40px; }
+  .icon-links { grid-column: 1 / -1; }
+  .arc { grid-template-columns: 1fr; }
+  .pub { grid-template-columns: 1fr; }
+  .abbr { justify-self: start; }
+  .cv-row { grid-template-columns: 1fr; }
+  .news .item { grid-template-columns: 1fr; gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#about"><span>Pavan Kumar</span> Ponnaganti</a>
+    <nav aria-label="Pages">
+      <ul>
+        <li><a class="tab" href="#about" data-view="about">About</a></li>
+        <li><a class="tab" href="#research" data-view="research">Research</a></li>
+        <li><a class="tab" href="#publications" data-view="publications">Publications</a></li>
+        <li><a class="tab" href="#cv" data-view="cv">CV</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ABOUT -->
+<div class="view" id="v-about">
+  <div class="about">
+    <aside class="profile">
+      <img class="avatar" alt="Portrait of Pavan Kumar Ponnaganti" width="200" height="200" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUEBAQEAwUEBAQGBQUGCA0ICAcHCBALDAkNExAUExIQEhIUFx0ZFBYcFhISGiMaHB4fISEhFBkkJyQgJh0gISD/2wBDAQUGBggHCA8ICA8gFRIVICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICD/wAARCAFoAWgDASIAAhEBAxEB/8QAHQABAAEFAQEBAAAAAAAAAAAAAAQCAwUGBwEICf/EADwQAAEDAgQDBQUHBAIDAQEAAAEAAgMEEQUSITEGQVEHEyJhcRQygZGhCCNCUrHB0RVi4fAkM0OC8RZy/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAECAwQFBv/EACYRAQACAgICAQUBAQEBAAAAAAABAgMRBCESMUETFCJRYTJCBSP/2gAMAwEAAhEDEQA/APstERAREQEREBERAREQEREBERAREOyAl1FqsQoqKMvrKyCmb1lkDR9VyHiD7QvDOEV9XRUtDPXOguGytka2N5BtpubaoO0Ly+tl8m1/2nOJTUOdR4fhUURd4Wua+Q29bhYHFO3XtJxuKVlNXwYdESNKSENcLdHG5UTMQREz6h9oZtV6viXD+2jtHwiQZuI5KpoIc5lZE2Uel7Ahb1hn2ieKCWmswrC6hg0dlc6MnzGv0TcJ1aPcPqBFwJv2ksPhp/8Am8NzibUXinaW+W4uslSfaL4U7gf1TDq6kn6MaJGH0dfT4ptGpdrRalg/aPwbjcUbqPHadr5Nopnd276raY5opmB0UjZGnm0ghSLiIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgclzTtH7WKHgSaLDoaI4jik0feNiEgayNt7Xcd/gpfavxkODeCZqiCoMWIVd4aXLa4dbV1ztYa39F8T12ImvxCSsr6v2ioqHXdeQlzndT1UTOkxG2U4y4ux/ivG6qtxP/ALppLtaxwLI7bAdBZa9FhWKzRiSV4LQQAzVxsfQaKTTxS1NbEzLljcbXtdwHVTsSlfDH3UWKOkhdox5Fmud+Vw5H1We9tIiIYaohpaGYtmw9xcwXeC62nVX5MTjkax1J3QsMt2HK4eXmseK6WclhGWWxbbn0IUKKFmQwvY+ItN7gXU6RMtkmrW1Yjnqi9strd5E6+u1ndbL2KojEZE0zWEad4To49CsNDVCFphkZG8vF2yg6HycP3V98mWXxuZkcNn6g+v8AISYIlkZcRZED3zwYtiWDMR6r2KsgkhDYgJogPEwakLCOZLTVAbTyFrz/AOEPDg8dWn9l48tM7JmTGLPtIRbX+4D9VGjcsr7S7uxJQTsAbu0EkNPodQtn4f7RuI8DLWUeKSwnSwL9PLQrRzHKZcry2CptmYT7so8j+6tzSzSXinvHMzRote/UfwnpL604C7d/aalmHcXhkUbzaOubyPR46ea7nh+J0OKQunw+rjqYmuLC6NwIuvzlpK6qiYwEZiHAAHYhdA4L7Qsa4axYVWE1ZijcQZKeXxRvIGrSPTmpiys136fc6LkfCHbfgWOzso8aY3CKmR1o5C68L+gzH3T66LrTHNe0PY4OaRcEG4KvEqTGlSIikEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBYDizivCODeHajGcYqWRRRizGE+KV/JrRzJWec4NaXE2A1JPJfFnbDxpLxVxVUOdK0UVE90NI0agNBsXHzd19AomdJiNtW424x4j4/xSTEq58k8EZLI4mC0cI/K3z8+ah4SMNwvDPbQYn4hJcFkuU5W9B0J6qI2tZBhkdO5pNRq67ZbFgPlaxK1mtklbVHv7tJ/C4ZXfIaKnv2v/AJ6hNxNzZnPlgaISHeIbPYD6aEeYVn2uJ1MyN8ne2BDnZTqP5HVY2S8wsXOIv4bncryN8o8MgNhvrqEQzAbQ1bRke50w0Fzv8LKg3Z92XtD43XvsbefVQoII5JGuZU2vp4hdZprYhE1ss8DspJDy69+Wh3HofgVJtTJSsqWtqWRiF5FibZmyfDl8VCgqGGR9LMGtlaTdt7Zm8wL/AEVU0TmiP+nStla4EujJsR6jY+oUSpwvFHubK3DJ3ka+CzvlbWynSO1MskUdQYAXRxuN2O5tPLVZHv4q21PK4MrQOR8FVbYjo7qOaxdMZJSKOpikGulxZ7T5X/RU1dPW0bu7qoWSxggh7mlubzuNR6odp8M04LaWVrJY4r5Lt1Z/aen+VPfR09dCdTDUMG5Oj/8A4sN7TQ1rAzvXQVI27w3DgP7v5VynrHQCSOdzpDYOB3ItzuomNpidJkI9nNpjlicbOcRmax35vjsQp8MbGyHK6xdcn/7/ALusKat8gkY8MLHts7JoD8OSv0tdIKR0Mx+8pzv+ZpFv4+SrpMS2OnrnxVJgkAe0tvboF1bs+7Ysa4Vijo68uxHBWkAQuHjiufwO5DnlOnouQd0XNp5mOAkN7uvqQRsrVLUXjNy4N6cx5/MKvcdrzET1L9B8B4iwfiTDG4hg1dHVQHfKfEw/lcNwfVZZfEHAPaPXcA4u6qhtUUFUWipgedHWNszTu06r7LwHHMP4hweHFMNmEsEovvq09D5raJ2xmNSyiIilAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiDQ+1bH58C4FqRRh3tVb/AMdhbuwEeJ3wH6r4kxKKYPFbJIx0QebNc69un1+a+pPtE1rf/wA5h2GMIbNNKX5i61gBsvkLE53OnEDnl5JvYnTzVJ9tK9QgTvL3FzO8eb+N7ifEfLoFbZVExuYyBj3O3eTdw8hdV1FQ2Q5WOc1g9431d8eg5BU08cL3ZyxzbO0FrX9DfdIQ8hjL392PC5xtfNoCpr8MlDWgttZt8wN/iOoXmZlPNcTGCT3SyZlmvHQ9R6KuSrc1weXCmcBoGHMDz+ITRtbkjdSQjMyzgLm2o/0qJFmkPeOY69wDm3IV2SsdO7vonWyjxMOwHl1bfkrb6tmWMsJZa4FtyOh6ojTJU0kjmutRxTxAkHM0lzfiPqslVYVSyNj9mHsVT+V7nMJ8w4aLCf8A6GshpGx02WAtN3WFi7zJ/wBsrc2M11fLCyplbKBdrBJu09E0K56iviL4JKoSNJ1E5zWt0dyVqDiDEaIGN7vaKc+9FN942ysvqw1phqKWPKPxR+FwPmo0zY/fjc4NP51HXynUr1RLhtS/vo6c0znG+Rp8I+CjyMyBxjnBYTchx5dAVSKR5YHN5/RW/vIn5SCA76q24+E9vYZnRTanXkTspsUzDUwl93NP3bzmtoeqx5JJa21wNvJJZL5m2AGh6J7Vbvhs7ZKZmQHNBdmQm+xVqSMxxskYS1zprFp/AL63+awNDM9lc4Akd7lJAO1xqpklaZqWVod94LgHrbU/TRU12tvpKdI1kYAkEguWtPUdF2LsG7Q5eHeJRgdZO84dXPtlcbhj+o6LhEM0bmVMZuRfPHryWQoKh0dQyogky1DHDLY2z/5VojRvb9MWPa9jXsIc1wuCOYVS5h2LcWO4n4EiZUPvV0R7p4PIW0XT1dmIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAhRUvBLHAGxIQfO/2jReowaRxHdxMe5wK+TJQ8yyzyEC7bgnaxJ2X1V9oippzX01I5gMkVMSHOOmv7r5VxBjjIzW4OnoqfLT4QWOc2RoGpNvEeXosnI9xpbujuBe7mk//AAKFTRF02ZzSCbZehV+rhqIYCyOZ4aRdzG3PzOydKsfLUvY3K4mSJp0Y7UeoKjB7iA0e7uL7hXjQ1bj7pLnHY7+pWVocC9ojbK2ZucW8AF7DqSotaK+16Um06hiYs4Isdz+inxU8c7bSS93K82AIuFs+H8LudNlcQXZcxaQs7h/Bkzpu+lY0lw1uNh0C5b8msfLspxLy0F+DVTgDHEx9rf8AWbk/BVS4XLCckrSCRu4WuV01vBD43mSAFshBJftqpVPwVPo2q+9cWEkuF7H4rKeVGm8cK23I30EkbS6a+jQQdzqdFRLB4rGMg6G2i7PJwPBJJnIvqLchp+y8PBNIJbiMNZubD5Kv3UfKfsZcgjjlFLC/uM2R1y4C3wVddR97GZTC4eHMco0A6rrw4Tjjhy5QW9bbKLPw20jJGGm2hvsqfdRvpp9lOnFvZS6JztBkNjZRJGuA1Gx1v0XUK3hQwOcxgAuCdlrWJ8PyU8Qka3dovpzXVj5NbdOPLxL1avBK5tQ03sRpdSZHlrst9M2ZWzTPim8TT1uq52EkFoN26W53/hdW3DMa6Wo2OZJocx6jdTITI14f+K+45lRY2h5aDcW5gKXEGi/i26HdSh9RfZmxWP8ArGJ0LWTM76LMc3u3HIa778ua+pBsvkP7NdQ1nHNTTeJ7H05c0udq13P6L68GymvpEiIisgREQEREBERAREQEREBERAREQEREBERAREQEREHyn9od8k3GkUAGjYgQeQXznWwuhnLmDMHbm9xb9l9CfaMfNh/aJTzE6VFIx0fwJBC4fWU7ppXd3EG3u0gG5vZZT7ax6a+ZomEOdcEbG+nwUv8AqpETWhoe3e1rD4qNPT5nB2UhruqvU1IZpmsIzEnb9Em0R2mKzM6X6WGsxOdrc4Deltl0rA+Hi6Bjcga22lhp6q3w3w+GhkjmbW3G66PQUgjIaNANNF4fJ5FrTqH0XE40U7lDwrh6mYWyNZqNifqtgjwqFhbdpObfyCnU0LWkADksg2NpIuOS44mZ9vQmsfCB/TobsygDwk/FXBh7Ay1gb6rI92GjbMOi9sx518ICvtGmJ9gbc+HTorT8Oa117XFuXVZwA5bAAgqy4XI1t6ps8YYN2GxHXJ/lQZsNitYtPotkkGYusNFBmaSQRuD81WZTENRrMLYNSzULXMQwxr2e4CDyIXQalmc2AuFiKmkaQfDy6KK21KLVifbkWL8OMMbixuUg3uFqc9BNGbd27Na1+RXbqyga5pB6LT8SwtoY8ZSNDYjkvSwciY6eTyeLX3DmfdhsmYi4cdQeR+CkPbFC3KWlxJGgdy/ZXK2Bzal7SLkm1+eigZRHJmaBdu4XrxO428K0eM6fQH2eKqOPtEjaDd8rHNy8hovsgbL4M7Da+al7U8JY3aR1r33BX3m3ZWr6Ul6iIrIEREBERAREQEREBERAREQEREBERAREQEREBERB88/abwlj8KwPGw27opn0z/RwzD6gr5fqa4S+PIe8F2uB93Ivtbt0wZmK9lddM55HsD21AaPxa2/dfEs7A2R7WEZTpfoVnLSPSw8CaYMZCZM2gPQ9VtXDfD9S+sjnmpy2OPU5hurPClC6uxFgc3MG7ldTbCIgGtaNrCy4ORef8w9Li44/1KqlY1rAGNsANlnKS4sbErGU0Ni0u95ZqnLQbN+K8S8al9BjnpmYNW7KaGHKCAT8FAp5BYG2yzFO8SAWN1ENZU5Dk20VIhOpA3GymthJAu0kH5KuOKwvfUm1ldG0FwzNsW5bdFFljfmLgCRa9lmTE0xXLm2HTkohY17nNCiSJYZxdlsQQLqNI0uBtposzPTgOBA35qHKI2sPh3FtFEpjTX5C/W43UGY3BB+iy09nNOUegWMkAa2505LPuCZhi5x9Fg6+EPjcQNSFn6gsynW/x3WImaCdl1Yv25cs9OXYzShtU7K3fp1Wt1ERElg0NA0JXROK6AiOOvibdo9/yWm1UcckYLd9nBe7hndXzfIrEWbR2QTOg7T8Elvp3wHzK/QZuy/PDs5Aj7QcEyGwNQzb1C/Q9vuj0XTVyTD1ERWVEREBERAREQEREBERAREQEREBERAREQEREBERBheKsNbi/COLYaYmy+0Uz2BrjYE20+q/O+ua4TOgAAMby0i2/VfpQ4BwLTsRYr88uM6B2G8c4xSZHRd3WSANk3AzG30VLe2lPUtj7Oo2PZWSEasa0D0W61k8VJA6oksA3U6rU+zRmalrjprlH6q12izVRMFDCHd0xpkfY2uvOvWLX09PHfxptkDxnRREOlfkaSRur8XaDhIIDakXOlgDdccbHXVsvhBGlhpcWWTpsKqaaJsvskkkpOtmnW3nyVJ4+L/qVvucv/MOy0fHWHyH/scxvK7Stnw/i+gdZ7JQ5m177Hovmmqkxh0riIZIy0bEagfupOE4niVLOJHNcbm0jT+IKl+NSI3WWuLl5d6tD7BosYppqeMMcHFwNreW6lumj7sucRdcQ4dx6Rsjcr3FmXQnYH/bLotBiL6mMnPc22Xm26l62O3lDOyz3NmuuCNRZWWT924h1viohnc1pJ26lYTE8S7ljrOuR5qsy2nqGUxPFmU7XAPt530+q0zE+NsOpg+P2lri3w/H1WhcXYviEgeIJjY/ivt5LnE1Ni1XUAta4kHS+y78OGtu7y8rkZ716pDq1fx86Bw+5cWbhwFrfNYSp4/kcQ2ON2u3T5rVaPAcbqPA7K8OIJJN/h6KbLwrjNO09xHFrraxuunx48dbcPlyZ70yknGj5mBoZaVp1tfxDqs1gWOw4zGYXuAnaeX4h1XPq7DsXax3fQ5Xjq21wvcBqKjC8WgfVMdHc2JtcaqfDHMfin6mTf5Otz0LKyhlp5WhwIILfNceliyVU0R8JDiLLuFMWyxxzMIIdbY6LiuI5hi9aXtIyzu0+JW+LrphyO423XsbwQYz2o4RAx7WRxP79xPPLqR+i+8RsvkT7NeFvrOOayu0DKOnuSBzc7T9F9djZddXDYREV1BERAREQEREBERAREQEREBERAREQEREBERAREQeEL45+0VgzcM7TTiDGlrMSpmyX6uF2n9F9D8Y9p2FcL4vHgzGtqcQeMxYXWawdD5+S4f2wcQUXHOBYfVtpnUeKYe54dG7VkkZt7ruoOtj5rC+Sm/Hfbpx4Mkx5RHTUey5t6GvdoPvGN89iVtWKYfDV1jpJowQGgbgrBdmsBjwWrlIIMk9tR0b/lZzGqs0zHSMa4lo5dV52W2rPUxU3SJYU0+E4ZPnkyhx0Glr+Vhur8/FGE0ULXyQZGu2dKRHt66/RaaGV2NY1Bh9BUPEk7rT1jm5QD+Rl+io7SsBpsAw3DKOjp3Zpsz5qiW7nvcNAM3Lfksq8fytHlLS+fwr+MNgxDEKHECBQy4bJI/ZragZvqNVrk0ckUobVU3cucfCRqHH1WsYrJhlc7CZMHomUs7KVrZ4mB1mvaSCSXHUu0JtYeS6xVcMT4bgdLiAz1NFPE18tNK68kJI3aTy+q0zYIx+pU4/InJP5QwGGSPjqW2N2k6joulYPV5bNB0I1Wrx4RGyCKqieJGPF2uHMefmszh0bmTAbrzLzD1sca7huwOaEm52Wi8RzHxhpN+gW7RX9hN1ouMxl9YW30PVZRO5dNo/FodVA5xc94Ludj1Vilo6qskLIm93E3/yO/ZbpSYGype+SodliYCSfJTeH8Bi4ir3sq45IMIj07ppyumP93MN/VduOfLp5+SNdtRhxHA8PeIZOJHyVOv3VPGHG41PlsFXT8ZUE/3VPicM2Z5aBURmMkcjfbVatNVv4a48xdtdQB9NMJaaWJkTS5rDe2TMLN5a22urXZ1Re18TGCppo5qSSF7ZmyNu0t5aHndd/wBtjmu5l5P3OTz1puMmI0tS4wzxBkhvYEgh3oeatew0U5F4muA2uFhccw1mA4o+np5TPh0huIs93wk8wfJZHDpJHxsBcHEbO6hcs08PUvQreckamG14MJYqd8DgO7a4OZrsOi5XxDH3HEOIxm3hmcRp11XV6FzsoB0uFzvjOkc/iiobG3xSta5oG7tAuvDkie5cHIxzrUO5fZdpnN/r9Tb7t4ja0n1N19LL454M4xxvgLhGSjoe5pxI/vJJnszPJPIcrLsHZZ2vycX4q/A8ZjjircuaF7Rl7y24I6rqx56WnUOPJxMta+cx07Oi8uvV1OMREQEREBERAREQEREBERAREQEREBERAREQFblkbDE+V5AawFxJ6BXFgOMKt9Hwdic8QBf3JYP/AGOX91W06iZWpXytEft8f8Vy1XEPFeKYs4kPfOXNIvprpb00WxQCnxDDZKStjHfhuVxHXmo1JAySnlkcBmNQSfQKPicrKOKSpa/KXNLT5nkV8tbJNrvuJxRjpqP0y3CMPccNREgDvHvePi42+gU2spGz3DvdtqFcw2EU2E0VPybE0fRSwwncaErfLaYnbgw1iYajVYYxskU8N4ZIjcFq9xx4xvBIqLEqdk5abxytOV8Z639FtMlEHtVpmFMJ0A+Sx+tbfTeMETHbQML4SwiCRlSTUyTxuzNbIBld0uB+i6M0VNdFad07w4AFtwG26WCk0uG08OuW9hrZTXloj7tgDRzIU2z2n3K1ePWvqGtTU/dNMMbbRg6NGwKvULLPFxc7KRKAXOFl7SMAkuufe+5bxWInUNgaMtASb2A5LTMUs6sbYXW7yC2GH0utHxB1qtpOyrX/AE1yf5XYInWyfhJvbqpTqd8Dc8ERjk/NES0n5KiF4Ib5LMREPjyuHLcrWuTXTCcflDQMbw2jxypdPitE6SfVokGjyLaXPNQMNo/6TTmLDqcU2exe8tu9x9Ty6LpMtFFKToL+iiDDGAmzLei0nPbWmccau96aEMFdPM6okbme7cnWynQYVFHYNYGlvILdBh8bWbKJNSNZ4g3VZTlmemn0ojuGIZG2N7dg1YbEaOndxTR1kwBaYHNserT/AJWemGVwN9Atf4kk7mjp6znFJbTXQg/4XXimZrMOHJGrxLFY5K+vmMEQsxo0t1UrgeV2F8Y4PiuVw7qVrn62uA4A/qrOHM7+nMr3XJuQpNPCImUz2tBAme34EXWeO81tp32xxfHMS+3GuDmBwNwRcWVSxmAyOk4bwx7jdzqaIk/+gWTX08TuNvhpjUzAiIpQIiICIiAiIgIiICIiAiIgIiICIiAiIgFYfibDnYrwxiOHsNnywnIR+Yaj6gLMKkqto3Gk1t42iYfItFQ1EtZUU7WEuL87WAXO2yx+O4e99MTJGfA5t29NV0LiWKPB+OcZjiFhcuYNsuYB2n1WsV9TFPgFfK53/IaBlb6EXuvlr44pl1/X3Ncn1cHl/GRJa1jNDsFcikJfbrsoTp88UbwdHNBHyV2IkuBvYea2zR24uPPTLNYCLFXGRi4sFZpyHtLbG41UtgDtdwNLrj09CPS4I2tFyVFqXtbex5K495GUWKxlbIQ0m/oolbfSOHOkeW81PpoMlhz6qJQQSh3eOZvqLrKx+E673SfStfbJvZmwy11peJ0+pIst5c3NhhAK1DEmEvsABfmqR/prf/LE01QRUd24kFbNSlrm72Flpk8M8Egqxci+y2mhdfKMxIIuCr2hlSZ9Ms1h1AtfkvQ22hGqth9ycp1G6OeQS0jU6hV012qfltd1lg62cWOQ2ClTz2/EsDW1Abe5sUiu5Z3ujzTW0vosVjDBPhwhIAL5GDXa99Fee8k3J0usVjcwbSU8ZcQ4zAg35BelhjUPJyzPlCdh2HSQjuJW5cpsfJSo6CaTiWPDISHXcMp5ZnENCvvqg8UznNIklAzA8/NbJwHSjGO1OJxbeOKQP9A0afVYYq+WTT0M+Tww+X8fSlBTijw6mpG7QxNjHwFlKXll6vqI66fDzO52IiKQREQEREBERAREQEREBERAREQEREBERATQoiD577W4XUfHJqYRd00DJMp2dbwkLS8ToxHSzvpS0OykPDj71wusdr1HE7EsJqyy7gx7TpvqLBcnqo5Ku7Y7nNuvnuXWIyvqeFkmcERCPhtT7RhFLI7QtGQj0WRimAcNQtUwipdAZqCYZSxxsDus1FKMw10CZY3G1MNtTps9PUFo3H8qUJTlLWuFt1gqacDUOuSNlLFQC27nC7RfyXDMPTrPSfJO6/l1UKbVzXyNswu1BKpExLiScwG3qvKueM0krZebDdUj203GmYMsYykEAEclcieHSgC1ui4xX8SYvBVOp461rGsNgXMubei2/hziv2ykyVbmGqiHicz3Xt5OH8Lothnx2wryY8/GXVJGsGEuII2Wj4hUMjkc1zh5eqky8Twtw54MgaGi5zaLluNcT1E8j5KQsZC0/wDZJ+P0HTzVKYZtZfJnrWsugvmi/pMglsQQfmr2GSl9FHYixaCD1XMKbGsTxCFsTpWsYSA4tvcj0XQ8FLm0jGEEBjQB5Jlp4oxXi/cNhjcQ67juk0zcvh381EfUDJlOhA1ViScPjOhB5LKG8zpEraiwcAPisDUVAc466q/X1FnvaTpfZYWaotcjRdFKuPJZcdOXPAzc9Vr2L1hlxOGKIB7oiSG33KmyVHdszu1dY2WEpqeSrxB2ujRv0PVejSPGky8ybTOSNNxpWSnD5a+teX1LI84F76dLLq3YNhkkmKYlitQ272MDb8gXG5HyAXJ6KJ8tK6CbRrhZw+K+kux/B5ML4J7+YDvauUyXHNuwVOHj3fa/Py6xTH7dHREXuPnBERAREQEREBERAREQEREBERAREQEREBERAREQadx9w3VcQYNGKANdV0787GONg8HcX6rk0HBXF1XUdxFgctM7bvZyGMb53/gL6KXlvJcmXjVyW8pd2Dm5MNZrV8Y8a8PVvCHF81DVTx1E7mtmL2AtbZwubfEKzS1rZYc+YC5uF1X7QOFEVmF4vlGR8TqckDXMDmGvpdcEo618MpY8gW0IXNlx66h1Yck2/Kfbc4KizjsANVJmrmxxFxkFiLk32CwNPUNfkIcPJYXivFPZ4RTNcc8nJp1K8/6XlbT0Zz+NNs1U8ZNZGfZohkGgLjqsS/i6erqTc5WDVzuYHQLUooK6Q96WnuyLAu0WxUGHQAGSSQOJ2yhds4sdIcMZst5YOrxGeeWYG/3kmUknU9F5R1b4HsyPLZHGzS11sqzY4fmqJ25C6W7rvBFg7W/8fJX4uFA5gbI0xTi9nkeFuulrLXyx+OlPp5ZttjsYxmpihZHUTmRhscg0v5nyWu11XUVRbIHeC9rcvL5LfcU4NbURQn21s0rGgWa0nZYmo4VqnTOywujhbYglu+iY7Y4Rlx5ZQsLrY6YRmQZCCBvqfMrd8N4uidSMeNmnKRe3xWp/0IwQgmUZnXsH6fVWZqZ2G0zCG96JNAW66rG9MeSWtLZcUOo02KsrIRIw2Nrkbq86oJbe5suRYRjstLWBuW2Z1rX2N9bLocVaZKcPNwXDbkFx5eP9Odw7uPyfqR2t4hKM/wCywc1Q1hJcfJSsQq25Sb3/AHWt1lS6R19uVgFpiopmuvT1LnOe69wDoQV0PgLsvxTiThGp4jwycGoExiFNLoJGgXuD1uVzCINkjz/ha7Yb3X2l2P4acN7K8IYWgOnaZzp+Y3C9OmOLR4y8rJltSfOriOHcDcVT4tHhr8EqYXF9nSSNs1o5m6+oMMoY8NwqloIx4IIwzbew3Uuy9WuHBXFvTnz8m2fXl8CIi6HKIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg552xYQcV7NK2SOLvJ6Jzalg9NHfQlfHtU3JLmDrF2oIC+/qumjq6KeklF2TRmN2nIixXxBxTgkvD/FFfhFQz7ymmLWk/l3aflquXPX5dnHt7hiaGV8BBIyAbNvuF7iWGuq61tbLY7EaabbfReQAPe64trckrO0+SoiDHEE5bLzp6nb1KxExpj3YS2up+77ySPYDLyspVJwhLDlY7FJcx2sAf90Wfo6aGP7oAeoVypkex+jsjx9VlGTe4bRSI1KPS8O40wCSkngmazS7vCfism3h/iyR7pI4Kd+X++4P0USgx2Wm71wde9rNP6rOR8bRsAY6V+pAzE2t8lLurFNdwhvwriuGMSPwyM6AkseCCFhsSpuKhEGuoXxlxJBuAD/lbq3jWnawthfdjrabiw5LF4rxT39K6Noja17rnrtqp3r0maUn4c1xDDOIG5pZQMrR+YfFQWYNjrqjLIGNj3OvJbi2rlnkBcLtaC0k6CxFtlVJKZGhgOYNFrqYvqHHlpWZ6cuxWhNHijbFzi54Lsq3KKcx4YzMbuDNgomO4e2SWOoYAXAZXDmksg9mDXaWsNPRaXt51iHJjr4WmWNqap/tDo3Pa/MP99FAjc577NOmb4gK9MLvf5KmJhBc+5tYEnqtKdQyvO5ZPDaIzVEcLAbyPawW1JLjYL70weibh2B0NAxoaKeFkdulgvkbshwJ2PdouHtMeempD7TISNLN2+tl9jjZd2KOtvOz23OnuqIi3c4iIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg8XEO3Lgn2yjbxZh1M59RAMlWGbujto74behXcFRLHHJC+ORgcxws5rhcEKtq7jS1LTWdw+A7lkmZzgNRtz0Wboi1ovbfW6kca4bBg/GWKUtO3LStqHdyTrYX2WDjkFMS+9gT+I309AvMvj36evjvr23eiIMe+h1Fgr88LZo/ELnkQsVg9T3kXvAE7Acls8LWvYA63Sx5rzrbiXo0/KGkYjglU9wfTTuYA7YfiWCmwPGHSOs8ix08yuyQ0MZP3gBHJX30kMTBkjEhfoLjVaVy2gvhrLhTaLHIpXlj5Xlh90DboFkIZsZLmCWGxvbVdcjp6cw913LD3huTbXzUeqwmjddzI233Nla2WZ+FaYYj1LRKWKokb96cx1vYbqSWGOL6W6rYZqCJjLjKQNBbksRUsDASDp5LLz3LTx1DX6vwgB5zXub7LCVMhjbe4v0CnYrMGu7pty78N+awL5XmTI5rwfMLrx0mYcOS8ROnspDnCzrOy2PS11JZGDE5uWxAtfl6q0G3a18ltB73JTaGnkqZ2RMDbDUje/Oy6q117ck23PT6h7COEzg3CcmN1MWSpxIgsvuIxt8912ILkvZrxtPJBTcP43kZUta2ON0bbNBtcN+S6yNl3V9POtO57eoiKyoiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgKJXziCke4HxHQKWdlgsRl7+RzRqxosPNVtPS9I3L5i4/pWT8RYgHa5pHG/qtAdEQRDM3PpZruWm111DjaAjiWra+3vDl5LSaikaczSLheRfJNLy9uuKMlIYalxCbDKsd5mswWsOpK3Olxpjo43l1tBr0Wl19K58ToyDYjfyWNFZVUhvYOiAtbzV7Y65Y3DLzvinUuquxh7nFjBkIHM7lWJcefB93NIQ+NnhsbczdaEzGWPcHOcBJoSQbC9tFaqsXinqA/OcttM2+u5I5rOOPMStPJiYb5R8QF72u71pB2A81MixdsWjngukJuOnT9lzQYpFB4YxfVrnX5j+eayX9SD4nEuABANuZ/2ytfj/opyI+W2T4mTmIdYi7S2+5B3WEr8SiFM43LiNCNjf8AZYQ4kHGzpLCxObqeSw1RiDp5nNYS5rtjfT1CmnG1O5Rk5XxCTWVJqamMQ3uRqSb5T0UdneNe4yHM6xBB5KqKOSVpc4FthbbX1Kl09C0OLn3eD1uuiZrWHNWtrysU8MlRCGsaGsJHiO/w8ls+BU7IKiPIA5wI1P4lBa3JZobofLZZXDWlrw6wGv8ApXNGSbWdn0YrT+t8o6kw8SUssZdHI6Q2B8m6fHdfSuFVYrsLgqb6vaL+vNfNGFvE9RQRub/yIXlpvy8J1+K7vwdVn2V1E92o8TR+q9XepeLMbhtqIiuoIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiX66K0+oiYPeueg1QXUuoD6150jZbzKje0vmzDMbDTTmo2tFZS6qrY1piY4F56cliyLkg81THEIhYm7r6oXETDmFSZbVjUOIdo1J3HF8o5SRtf+oWkPhzXvcX6rsPathmajoMajZ4YXdzNbk12x+f6rlboRluNj5rxeXExd7nEndGEqaPM3QWssRVYXHKSSLHqFtb4tMp10+Shyx6kcuiwx5ZjqJb3x1n3DQp8IyuN4c5ta40UGTD5meEd4LbD4Lf30175Gi3MFUMpGZgHMFydTddccmYck8OtnO30lQDYOk052+iu+z1JlFg+zW2Itr6+a6G7CIngkA3Vp2Ftb4sm3IrT7pn9jDSoMPqpHMYWkNtbxclPiwkhxzWOXay2Q0oDhZvw6rwUxAHly2WVuRMta8Sse2PZStAaA29hv1UlkAy2bqVJEQJIbsP1V4RgMHh0sue+TbrphiqCWWtzPnyUinOS/M9SrhhB1A5bqh9o2lxNgAq0t8pyU606Lwa6LFaqOpjIe+nj7qQ9HdD52XUcPmfQ1UU7NMp18xzWhdmWEew8JtrXsyyYhK6pNx+E6N+gW8vbYC2oXvb6h85NYiZh0mKVksLJGG7XC4Vxa5w1X95TupJHas1bfotjuto7c0xqRERSgREQEREBERAREQEREBERAREQERUuc1ou4gBBUvCQNSoc1e1gORuYrENr56moLXPs3aw2UTOlorMs7JVRRjV1/IKI7EXPH3TLeZ3US9vM+atAuY5zjqCVWZXisJJmkkcS55PkvBdWJLACTNl5m/RUGoc+whbf+86N+HVQtpJkORhN9bbKPGHspbsPjDs9r7joqHiawzVTh6NACZKhjbiTOLctCrQLxOtyCLm+u6tvcCDbcapEP+OdC2ztQTfVWpAQ66iUwoxmhixXh2roJspjniLDcX15H4Gy+cYQ+LPDKAXwuLHjoQbFfSNLJZxjf4mnSxXFePuHZsA4okrWXdQ4g8yxuI0Y78TP3HqvP5mPdfKHocLJ428f217KHAuabqJNFZlwBmUtjWSWdo13Uc1ROx7AcwuN7heHHUvZ1tjQ0l9xbzurkbGOeA0a+q9aLm7SHaq2XZJA5wtbYLXaO4ZRtEDECC0i2l1Eqoe6dawJ81NhkbLTXFnOA3JWIrZs8xYDtoTdVaQiSaOGUbbq08OJvfbdXjFla4gh11SW5revyU+SNdvWwgOJOttgFcEYsSTbzKusDWNzP1I+qOzOjJY0t9VnM7WiNI7wBfpyVukoJ8XxijwunbmNVK1jrcm38R+Auq3htzYZiuk9l3Dl3zcTVLdC0wwAjl+J3pyHxXZxqTe8Q5OTk8KbdBjpo6OmipomgRxNDGgbWGgSyuyG8hudFbOpI5L3Xz/8AVts0kBdLE8tc0XuFs2G8REwRGtBLXi4eOS1WSOSVhiYcpeQ2/Qc1PgYxz2MYPu2jKPQK0ItG2/RTRzRiSJ4e07EK4tOhmmo3gxPt+hWwUmJsmAbNaN558irRLGaa9Mii8BvsvVZQREQEREBERAREQEQkAXKiy1sEQsXgn1Q0lK1JPFH7z9eg1WMlxAuuA7To1QnvdIdXWHQc1XbSKftkZcWY12RjS4+Wqgy1dTK43DQOrjc/wrPhAs1tlac63MhV2vFYh7I6ocwkTBx/KWhQIKpzHPYRleddeRWROsdxqoMsUdQS3QOGx5qF2SbUNkaJC4NbbW5XrpdAImukO2g/crGwPmpLMlHeMGxtqFk4qqGVos6x6FSqp7p0lu+II/I3b/KuiNu5Gvmqx/bqvDodVKFDwC06fJWY3AeG5Uk+7cWAUN+j/NTAkt/6n+oIVDgTuq4rljrnTKvSw6dPNQmENzcj/VWcewSm4m4enwyodZ7hmif+R42KmTsuL66L2FxbZVmImNSmJ8Z3D5wnhqcLxGfDq2MxTQOLHtG1+o6joVea8StsxwafM6LqnaNwbJjdMzG8IjzYjTttJE3/AMzPL+4cvkuLR1DmOLXgtcDY3G3kvA5GCcdp/T6Dj5oyV/qVPStDi5t2OPyKiSsJb94C0nnupXtPhsdOXVVRTxElriAN7EXB+HJckS6f6wEkdSwv7l5aHHXoq4KZ5OaRxcVsBpaecZmgDTkdFSaOGPUFrtOqvN0x0xMga0WJt5XVDY3uN/8Arafmpb8jQ5oAaeg1KozsDrBu594qi+1eVkYswX0vmco75hmOx+FlRPPkJu7T5qGXl99dOeiitZmekTLOcOYJU8R45Dh8ZIY455Xge4wb/wABfQrKWnoMOioaWMRwRNDGsGgAWvdnfDYwPhwVdTHasqwJHkixaPws+A38ytgmcXOJC+i42L6dP7L53lZvqX69Qj5QbqktAt57FSGgWsFSduvkupyo7onu7prHWzyWv0FtVlI42M7qKMaDcrG1jZA+gETsrs7neosslT1LmD/kRFpOmdgu3/CnSEkxtkjI2sdFVlu0tI8Sqjlgc0ZJGk8gCqiDff5qJhaJV0dfNAA0kvZtlPJZyCpinbdjtenNawHBlSWuN82o9VXFI5k5LSQ7cWSJUtTfptSLH02INfZkuh/N1U8EEaFaMZiYeoiIgREQEREGvy1ks5JMuVt7WCjhjSb2F+p3VWTQ6+a8tYLN09BNhYC68JFuSqFk+CJUeeitPHOxV7bkvcoc3Ua22QWoSQNb69FZmgAIfGVdZmYcrTa/Iq/GQ4bCyhCKyTO3JK0eqodSOif3kBJHRXp4beJv0VqGqewlrmaeamEJcFQXDxnVSQWEaKMGxSeJt2kqsRNaPfKkXyLhQ5hlkvopo93e6tTxh7DbdIQRZe766FXBqLu5qFTzAHun2BBO+ipqMUo6aK8tVGLbnNf9ESnuYHiwUa4jdlLgfIclqWJdomBULu6ZNJVy30ZA3N+lz81rFRx9xHiMj4cKwluHRAf9tQ8Zj/6i5REy6w2cxEOs2Np5vdluuY9onCVJib3Y3gDoHVm9VTxkEy/3D+7y5rBh2I1U5kxLEJ6iQ7+LK35LZcAoJ5K1nslI6ZzNfBYZfW+hVMmOL11ZbFlnHbyq4/lexpaWkW6q0+2QkPyn1XcOI+DaHGZZZmxDD8UPvG1o5j/cPwk9QuTYlglTQVUtJVQOimjOrSNx1HUea+fzce2Ke/T6HByK5Y69sI2eaMWa/lsntMryA6U/ovX0j2crenJUexyOdfPp5Bc0zDshcacxvvf6qiQkNuSfRXGUrx1t16LyWnJaRqW+fNIkljXPdI+1ri+2y3zs94TfjuPR1ErA2jo3iSQ5bh5v4WfufJYXAOHarGMQipKeNt3HVxFw0DdxX0TgGEU+BYJHR0rbNaLl1rF7ju4r0OJh87eU+oebzM8Ur4R7lLqnZIxGNWjRY4R6X3CmSnON9SVQW5GaXXtvDRSwg+apyHNeyvaWIGyOaWt/dSlDqy9tdQMjbm8DnHyUwPeAM8nwaolY4traQN5xEfopUMLjZzrlEKm07ZzctB83aq6WyxWEMmgGrXaj/Cuh2RoAVp5DvECboIr6gFznWc2Rg9w62KmR5nPY8C1xdY6ZrnVHeMFngaA8x0UullMpY5rrMb4SOfxUJT3g6EKZSVz4rMeS9v6KMSLZTvyVsDXT5qSY22WOVkrA5jgQq1rsM8kLs8bvhyKytPiEc3hf4H9CpiWM1mE1EuisoIiINaaWkAjxckcLiw3CtwuYQ5rLgDUBUTSd1Kx50jdoSs9OhXGS4kEbdFdsoriYajTY7KV3gI31RK07cr1juRVQ1NtFS62ax0UJVOY1+2itNzMktYK6NrAql7T7wKC7a7bHVRaiIlpLRfyV+NxtY2V0AEqVZYT2qogcA8Gyn09f3lg5S5KWORpBCxU1G+ndmZchW9q7Zhrw4XBuqsxI3WJhqiLNdoVkY5Mw3ChKDieHRVsL43Xs7fKbH5rBt4SoSHSSulqLbtkN9FtTw+12lUxvdrmH+VO0OdVfBdPSYkJKBxipp9QwnRp6L2XhOeI52Ahw8lvD42yZqZ4sHG7T0KuUriR3EwPeM0ueanas1c//AKPJbxtuRystjwSGKmY2OpnMUcpBilJsM35XdL8lsLqaFxuWAFY2roYnsloXgCObxMvsDzCrMbg9PeIJpBBBFISKrP8AcvuLubzB6hapjsTMWwt8NTABNE0mF51c0jlfmCqX4NVwVdmknkGuJ1HQFTPYnTvELK5sUv4oqltiD5HmqTjiazWWlLzW0TDlTqWwOZt/oV6ykuBa7OnNZ7HKSWgxmppJCxzswcDHs4EXuPqo7cgjLrAeuy+Uy0mlpq+txzF6RaGLNCTvd1/JVwYVPWVcVPTszySODGi3P+Fk2xPqJ208MZkedgzW/ot1w6joeF6E4pjEzIZgAcmhdrs0eZ8t10cbj2y2/jDk564a/wBZykwzA+CcIjFTURw5rd9UPOrj/wDdgpbeJsHxBoZR4pTvJGgJsuaYniFTxHXiprIsjQPuad+ogZf3iNsxWAxDg7B6yoM0LJ6aYm5fBM5pX0lKRWNQ+Zvfc7l3RjgWDTN/c03Xj5G3yhwI81wuDCuIcKaG4XxZVMYP/HUt7z67rJM4s4/w63fU1FikI/LJlcfg4K+kbh1y2twFS91udiubUnagGuAxbh2uojf3mR5mj4tutgo+OuFsQdkbirIZHC2ScZD9VCYln605cVo2kA/dH9lkmkO8IuFhn1NPV4lSPgqI5rRkHI7bZZu4a03F0FTyGNGl0yNMVz6q227n5jopL83cu03G/REwwpcRU2Gyulrw/vYXBkh300d6hWmtcZy46jqpBFm2DT6ckglJhro3ANqG+zybWdsfQqYWuA0GnI8lh8ztiy481601EZzQv7o9GnT5JpDKbAN5lenXmse2uq237yJkoHTQqRHXUr9HOdC48pBb6pKWSp6+Wns2Xxs89wsvBUQ1DM8Tr+S1118ocLOb1BVDJHwyZmOy+hTuFZpE9w2tFiqbFWuIjqPC78w2KK24ZTWYYeNxLxKHNcwnkVXVxd/A+J1hcaFWIbOZdjst9LWUnR7GvcdRoVVshskM1DHIb52+F2mxCvxOuADZWYmlstREBYO8YH6r2M2QhLubWAVJB20VQ2uBuqSAdSLqEqhrpsvWm7rHZeN1CEEagA+SgeOAadLfNXWk2VBGZuoF0bcHUWspEgOXhDXgtcFS1421S5B0Uq6QJ6QteSB6L2KRzCM3Lop7hnZqAoU0TgbhDSU1+dvNNCo0TyLBX82yhKJUtc14eBsvdZmNkYbSNUmVofEdwVjo5HU9RYnw3VoRpko3iWPMLZuaj1rHPpw8C7ozdVaAiWPUHcKS0Ne08wUGOkbLPF901h0uLjULHSGN9qfFIBLb3X2sR8Vl+7mp/daXW6KzUsZVREnQ+ehCso0XjTDaWnw6lr6Zj2tZOGF0jr6OGn1C1IuzN94EWvpqug8SUxqOE8QhcMzomCUD/wDk3/S65vSTxwPpqrujN3Lmu7q3v67aLwebij6sf19F/wCfl/8AjMfptlFiNBw7h2c00zsTkZ4jlByi+jR8N7/Va/Uz1WJVra/EhnfmPs9ODfKfU7nqei2vG3cPU1G6pkgkdVSAPER1dmcL2I6rX6SF4eaioH37+QOkY/KP3K9jFStKxEPEzZLXtM2X4IHRRkE5pHm73Abny8uSu5Da4GqvwxF7gG638lPZSaWIWrnYMxuv7uqtSQk8iVsvsF9mWVTcKMhs2Mm55oNQMMn4WuB5EKh+GyVdg6mEo/vaDb5roMOAsFnSkDmpLaSmg8MbA53VNpiJa7wvh5w2pJbA2MOGthut6ZZ9iVDpqRmbM5tj5LJhmUaEFVXiFTIvNVTAiB2pGnJVMNtxqrNU8NgOpChKBE0tN3NBVx72N2Ufvnhtwbkq1d8h1Ui8HufJobK9mII0uqYYgLXV9zLEE29UFIyncIY2uBBs4dCqnXtcBW7OJ1CJeCN0bSad5jI5bg/BGVrS8NqWd24nRw1af4QtI57+aiyCxtt5ckGUeLnQXB6bIsZE6WDWI2B3Ydj/AAirqE7SKNxLQL6hTm2u5vXVEV1Vkm1VG4XGYFq9scyIkkLo63PoqrmyIqLPb2G4Xpta4OtkRBH7wtfzV9krXcwERWVXGuvoDcL11jvf5IiCkGx2+KrLRINboiIlYdEGkuAQHTXRERK423ImxUKqguC5p1REJW6Wch3dPOinsJY+1/DuiIJIN7bfFUy07JW3AylEVoVlgq2lIMkb2jJI0sPPQiy5xQ0sXC9HHVYjAZsVkFqakBBLeWd3TyRFlfHW1omWuPJalZiqHFHPPUvrq54lqXkkW91l98vn5rMU9K94DnD4Ii0Yz7Zamp8hAAv6LLU1I59hlREGUbSRxtBc0ellS+eKP3ABZEUp0iOlfKSBeykQUpvciyIoGRbHlF73VYHMoihZWL2UHEZMsbW8yiIIUbHdNPJSY4ralt0RBIyty2AseS8N3M10t1REStvfGxurhdW++L/dKIgvQxndyh1FvaMrdCURQfC6GFkfeO2HVERSP//Z">
+      <div class="contact">
+        <span>Cyber MANTHAN Center</span>
+        <span>IIIT Hyderabad, India</span>
+        <span class="mail">pavan.ponnaganti@research.iiit.ac.in</span>
+      </div>
+      <div class="icon-links">
+        <a class="pill-link" href="https://www.linkedin.com/in/pavan-kumar-ponnaganti-b0a5b91bb/">LinkedIn</a>
+      </div>
+    </aside>
+
+    <div>
+      <h1>Pavan Kumar Ponnaganti</h1>
+      <p class="role">PhD scholar, IIIT Hyderabad. Co-Founder and CTO, STACLI.</p>
+
+      <div class="bio">
+        <p>I am a PhD scholar in Computer Science and Engineering at IIIT Hyderabad, advised by Prof. Sandeep Kumar Shukla at the Cyber MANTHAN Center.</p>
+        <p>My research is on aggregation and coordination in smallholder supply chains. I work on how to trace a product and hold the right party accountable, and on how to group small farmers so they get the benefits of scale and reach a wider market.</p>
+        <p>I build what I study. As co-founder and CTO of STACLI, I run a mandi operating system that is live in a pilot with 12 traders, and I am building TULA, a marketplace for traders and institutional buyers. My earlier work covered cloud federation with many-to-many matching, and ransomware analysis.</p>
+      </div>
+
+      <div class="tags" aria-label="Research interests">
+        <span class="tag">Blockchain-based systems</span>
+        <span class="tag">Supply chain</span>
+        <span class="tag">Intelligent transportation</span>
+        <span class="tag">Malware analysis and detection</span>
+        <span class="tag">Cloud federation</span>
+      </div>
+
+      <h2 class="section">News</h2>
+      <div class="news">
+        <div class="item"><span class="date">Nov 2026</span><span>VITAL, our traceability protocol with accountability, is under review at IEEE Transactions on Dependable and Secure Computing.</span></div>
+        <div class="item"><span class="date">Jul 2026</span><span>Co-founded STACLI. The mandi operating system is live in a pilot with 12 traders.</span></div>
+        <div class="item"><span class="date">Jan 2026</span><span>Joined the Cyber MANTHAN Center at IIIT Hyderabad as a Research Assistant.</span></div>
+        <div class="item"><span class="date">Dec 2025</span><span>Paper on the security risks of the blockchain application ecosystem accepted at IEEE BuildSEC 2025, IIT Patna.</span></div>
+      </div>
+
+      <h2 class="section">Selected publications</h2>
+      <div class="pub" style="border-top:0;padding-top:4px">
+        <div class="abbr">TDSC</div>
+        <div>
+          <div class="t">VITAL: Verifiable and Identity-free Traceability with Accountability over Layered Ledgers</div>
+          <div class="a"><b>Pavan Kumar Ponnaganti</b>, Mohan Anand Putrevu, Sandeep Kumar Shukla</div>
+          <div class="v">IEEE Transactions on Dependable and Secure Computing <span class="pill warn">Under review</span></div>
+        </div>
+      </div>
+      <div class="pub">
+        <div class="abbr">FGCS</div>
+        <div>
+          <div class="t">A Blockchain-Based Decentralized Cloud Federation Formation Using Many-to-Many Matching Game Theory</div>
+          <div class="a">Sandeep Sikarwar, <b>Pavan Kumar Ponnaganti</b>, R. Kumar, Benay Ray</div>
+          <div class="v">Future Generation Computer Systems <span class="pill warn">Under review</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESEARCH -->
+<div class="view" id="v-research" hidden>
+  <h1 class="page-title">Research</h1>
+  <p class="page-sub">One thread runs through my work: small producers lose value because nobody can trace their goods and they cannot sell at scale.</p>
+
+  <div class="arc" aria-label="Research arc">
+    <div class="step"><span class="n">01 Trace</span><h3>Know where a batch has been</h3><p>Blockchain custody records point to the exact party behind a fault, without exposing the consumer who reported it.</p></div>
+    <div class="step"><span class="n">02 Aggregate</span><h3>Sell together</h3><p>Clustering and matching let many small producers act like one larger seller and reach more distant buyers.</p></div>
+    <div class="step"><span class="n">03 Deploy</span><h3>Test it in a real mandi</h3><p>STACLI runs these ideas with working traders, in a live pilot with 12 traders.</p></div>
+  </div>
+
+  <div class="thread">
+    <h3>Traceability with accountability</h3>
+    <p><b>VITAL</b> models each batch as a custody tree on a blockchain. When a complaint arrives, it ranks the custody nodes by how likely each caused the fault, and reports whether the failure was at a single node, a region, or the whole batch. Consumers file complaints with zero-knowledge proofs, so no identity is stored.</p>
+    <p><b>AutoVITAL</b> removes the trusted regional auditor from that design and handles batches where several parties failed at once.</p>
+    <div class="meta"><span class="pill warn">VITAL: under review</span><span class="pill idle">AutoVITAL: in preparation</span></div>
+  </div>
+
+  <div class="thread">
+    <h3>Aggregation and market intelligence</h3>
+    <p>A smallholder alone has little bargaining power and a short selling radius. I study how grouping farmers by location and produce, then matching the groups to buyers, can deliver economies of scale and widen the market each farmer can reach. The matching foundations come from my work on many-to-many matching and on distributed matching algorithms.</p>
+    <div class="meta"><span class="pill idle">Active direction</span><span class="pill idle">No paper yet</span></div>
+  </div>
+
+  <div class="thread">
+    <h3>In the field: STACLI</h3>
+    <p><b>STACLI mOS</b> digitises day-to-day mandi operations and is live in a pilot with 12 traders. <b>TULA</b> is a marketplace in development that connects traders with institutional buyers.</p>
+    <div class="meta"><span class="pill ok">mOS: live pilot</span><span class="pill idle">TULA: in development</span></div>
+  </div>
+
+  <div class="thread">
+    <h3>Earlier work: malware and system security</h3>
+    <p>I have studied how ransomware behaves on Linux across families and filesystems, and how modern ransomware chooses between spawning a process and running in-process when it abuses built-in system tools.</p>
+  </div>
+</div>
+
+<!-- PUBLICATIONS -->
+<div class="view" id="v-publications" hidden>
+  <h1 class="page-title">Publications</h1>
+  <p class="page-sub">Peer-reviewed papers, papers under review, and working papers. Pavan Kumar Ponnaganti is shown in bold.</p>
+
+  <div class="filters" role="group" aria-label="Filter by area">
+    <button type="button" data-tag="all" aria-pressed="true">All</button>
+    <button type="button" data-tag="supply" aria-pressed="false">Supply chain</button>
+    <button type="button" data-tag="blockchain" aria-pressed="false">Blockchain</button>
+    <button type="button" data-tag="transport" aria-pressed="false">Transportation</button>
+    <button type="button" data-tag="malware" aria-pressed="false">Malware</button>
+    <button type="button" data-tag="cloud" aria-pressed="false">Cloud federation</button>
+  </div>
+
+  <h2 class="pub-year">2026</h2>
+  <div class="pub" data-tags="blockchain supply">
+    <div class="abbr">TDSC</div>
+    <div>
+      <div class="t">VITAL: Verifiable and Identity-free Traceability with Accountability over Layered Ledgers</div>
+      <div class="a"><b>Pavan Kumar Ponnaganti</b>, Mohan Anand Putrevu, Sandeep Kumar Shukla</div>
+      <div class="v">IEEE Transactions on Dependable and Secure Computing <span class="pill warn">Under review</span></div>
+    </div>
+  </div>
+  <div class="pub" data-tags="blockchain cloud">
+    <div class="abbr">FGCS</div>
+    <div>
+      <div class="t">A Blockchain-Based Decentralized Cloud Federation Formation Using Many-to-Many Matching Game Theory</div>
+      <div class="a">Sandeep Sikarwar, <b>Pavan Kumar Ponnaganti</b>, R. Kumar, Benay Ray</div>
+      <div class="v">Future Generation Computer Systems <span class="pill warn">Under review</span></div>
+    </div>
+  </div>
+  <div class="pub" data-tags="transport">
+    <div class="abbr">VTC</div>
+    <div>
+      <div class="t">RIDEFUSE: Synchronized Video and Motion Sensor Fusion for Two-Wheeler Maneuver Recognition</div>
+      <div class="a">Geethika Palla, <b>Pavan Kumar Ponnaganti</b>, Deepak Gangadharan</div>
+      <div class="v">IEEE VTC2027-Spring <span class="pill warn">Under review</span></div>
+    </div>
+  </div>
+
+  <h2 class="pub-year">2025</h2>
+  <div class="pub" data-tags="blockchain">
+    <div class="abbr">BuildSEC</div>
+    <div>
+      <div class="t">Security Risk Analysis of the Blockchain Application Ecosystem</div>
+      <div class="a">Divyanshu Semwal, Sathya Priya S, <b>Pavan Kumar Ponnaganti</b>, Vimal Kumar Dwivedi, S. Venkatesan, Sandeep Kumar Shukla</div>
+      <div class="v">2nd IEEE International Conference on Building a Secure and Empowered Cyberspace, IIT Patna, December 2025 <span class="pill ok">Accepted</span></div>
+    </div>
+  </div>
+
+  <h2 class="pub-year">Working papers</h2>
+  <div class="pub" data-tags="blockchain supply">
+    <div class="abbr draft">Draft</div>
+    <div>
+      <div class="t">AutoVITAL: Who Broke the Batch? Auditor-Free, Multi-Origin Accountability for Identity-free Traceability</div>
+      <div class="a"><b>Pavan Kumar Ponnaganti</b>, Sandeep Kumar Shukla</div>
+      <div class="v"><span class="pill idle">In preparation</span></div>
+    </div>
+  </div>
+  <div class="pub" data-tags="malware">
+    <div class="abbr draft">Draft</div>
+    <div>
+      <div class="t">A Behavioural Study of Linux Ransomware Across Families and Filesystems</div>
+      <div class="a">Mohan Anand Putrevu, Sandeep, Seetharam Dharmala, Hrushikesh Chunduri, <b>Pavan Kumar Ponnaganti</b>, Sandeep Kumar Shukla, Venkata Sai Charan Putrevu</div>
+      <div class="v"><span class="pill idle">In preparation</span></div>
+    </div>
+  </div>
+  <div class="pub" data-tags="malware">
+    <div class="abbr draft">Draft</div>
+    <div>
+      <div class="t">Spawned or In-Process? A Study of Living-off-the-Land Execution Choices in Modern Ransomware</div>
+      <div class="a">Mohan Anand Putrevu, Venkata Sai Charan Putrevu, Hrushikesh Chunduri, <b>Pavan Kumar Ponnaganti</b>, Rohit Negi, Sandeep Kumar Shukla</div>
+      <div class="v"><span class="pill idle">In preparation</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CV -->
+<div class="view" id="v-cv" hidden>
+  <h1 class="page-title">Curriculum Vitae</h1>
+  <p class="page-sub">Last updated November 2026.</p>
+
+  <h2 class="section" style="margin-top:0">Education</h2>
+  <div class="cv-block">
+    <div class="cv-row"><span class="when">2025 to now</span><div><h3>PhD, Computer Science and Engineering</h3><p class="where">IIIT Hyderabad. CGPA 8.00 / 10. AICTE Doctoral Fellowship.</p></div></div>
+    <div class="cv-row"><span class="when">2024 to 2025</span><div><h3>PhD, Computer Science and Engineering</h3><p class="where">IIT Kanpur. CGPA 7.75 / 10. Transferred with supervisor due to institutional relocation.</p></div></div>
+    <div class="cv-row"><span class="when">2020 to 2024</span><div><h3>B.Tech, Computer Science and Engineering</h3><p class="where">Central University of Haryana. CGPA 8.56 / 10.</p></div></div>
+  </div>
+
+  <h2 class="section">Experience</h2>
+  <div class="cv-block">
+    <div class="cv-row"><span class="when">Jul 2026 to now</span><div><h3>Co-Founder and CTO, STACLI</h3><p class="where">Hyderabad</p><ul><li>Built STACLI mOS, which digitises mandi operations. Live in a pilot with 12 traders.</li><li>Building TULA, a marketplace for traders and institutional buyers.</li></ul></div></div>
+    <div class="cv-row"><span class="when">Jan 2026 to now</span><div><h3>Research Assistant, Cyber MANTHAN Center</h3><p class="where">IIIT Hyderabad, with Prof. Sandeep Kumar Shukla</p><ul><li>Designed VITAL and its AutoVITAL extension for accountable supply chain traceability.</li><li>Contributed to behavioural studies of Linux and living-off-the-land ransomware.</li></ul></div></div>
+    <div class="cv-row"><span class="when">Feb to Jun 2024</span><div><h3>Research Intern, NIT Kurukshetra</h3><p class="where">Remote, with Dr. Shweta Sharma</p><ul><li>Designed a blockchain-based cloud federation framework using Gale-Shapley many-to-many matching, with game-theoretic and security analysis.</li></ul></div></div>
+    <div class="cv-row"><span class="when">Jul to Aug 2023</span><div><h3>Summer Research Intern, Central University of South Bihar</h3><p class="where">Remote, with Dr. Prabhat Ranjan</p><ul><li>Studied and implemented existing cloud federation mechanisms.</li></ul></div></div>
+  </div>
+
+  <h2 class="section">Teaching</h2>
+  <div class="cv-block">
+    <div class="cv-row"><span class="when">2024 to 2025</span><div><h3>Teaching Assistant, IIT Kanpur</h3><ul><li>CS771 Introduction to Machine Learning (Jan to Jun 2025)</li><li>ESO207 Data Structures and Algorithms (Aug to Dec 2024)</li></ul></div></div>
+  </div>
+
+  <h2 class="section">Honours</h2>
+  <div class="cv-block">
+    <div class="cv-row"><span class="when">2025 to now</span><div>AICTE Doctoral Fellowship</div></div>
+    <div class="cv-row"><span class="when">2023, 2024</span><div>GATE qualified in CS and DA. Score 602, 98.05 percentile.</div></div>
+    <div class="cv-row"><span class="when">2020 to 2021</span><div>DXC Progressing Minds Scholarship</div></div>
+  </div>
+
+  <h2 class="section">Skills</h2>
+  <div class="skills">
+    <div><b>Languages:</b> Python, C, C++, Solidity, JavaScript</div>
+    <div><b>Blockchain and cryptography:</b> Foundry, Hardhat, Ganache, IPFS, Groth16 zero-knowledge proofs, ERC-3525</div>
+    <div><b>Systems:</b> Linux, Docker, MPI, MapReduce, gRPC, Git</div>
+  </div>
+
+  <h2 class="section">Service</h2>
+  <div class="cv-block">
+    <div class="cv-row"><span class="when">IIIT Hyderabad</span><div>Elected member of the Student Parliament, PG research constituency. Serves on the Research, Health, Infrastructure and Hostel Councils, and on the Classroom Recording Policy and Water Management Committees.</div></div>
+    <div class="cv-row"><span class="when">CUH</span><div>Active member of the National Service Scheme. Represented Central University of Haryana at the North Zone Inter-University Kho-Kho Championship (2024).</div></div>
+  </div>
+</div>
+
+</main>
+
+<div class="wrap">
+  <footer>
+    <span>Pavan Kumar Ponnaganti, IIIT Hyderabad</span>
+    <span>Last updated November 2026</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var views = ['about', 'research', 'publications', 'cv'];
+  var tabs = document.querySelectorAll('a.tab');
+  function show() {
+    var h = (location.hash || '').replace('#', '');
+    if (views.indexOf(h) === -1) h = 'about';
+    views.forEach(function (v) { document.getElementById('v-' + v).hidden = (v !== h); });
+    tabs.forEach(function (t) {
+      if (t.getAttribute('data-view') === h) t.setAttribute('aria-current', 'page');
+      else t.removeAttribute('aria-current');
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  var buttons = document.querySelectorAll('.filters button');
+  var items = document.querySelectorAll('#v-publications .pub');
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var tag = b.getAttribute('data-tag');
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      items.forEach(function (el) {
+        var tags = (el.getAttribute('data-tags') || '').split(' ');
+        el.hidden = !(tag === 'all' || tags.indexOf(tag) !== -1);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
